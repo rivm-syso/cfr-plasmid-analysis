@@ -1,0 +1,10 @@
+mash/
+mobtyper/
+network_analysis/
+pling/
+resfinder/
+synteny/
+contig_info.csv
+input.txt
+size-vs-distances.pdf
+rename_csv_pubkey.py
