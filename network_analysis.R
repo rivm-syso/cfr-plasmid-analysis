@@ -111,7 +111,7 @@ plot_network <- function(graph_layout, category, colors) {
     )
   group_label <- graph_layout |>
     filter(group != "Singleton") |>
-    dplyr::group_by(.group) |>
+    dplyr::group_by(group) |>
     dplyr::summarise(
       x = mean(x),
       y = mean(y)
@@ -348,11 +348,38 @@ node_table <- pling_graph |>
   left_join(
     mash_nearest_neighbour,
     by = "accession"
-  ) |>
-  mutate(
-    adjusted_rand_index = adjustedRandIndex(group_pling, group_mash)
   )
+
 write.csv(
   node_table,
-  file = "network_analysis/network_node_table.csv", row.names = FALSE
+  file = "network_analysis/network_node_table.csv",
+  row.names = FALSE
+  )
+
+bind_cols(
+  node_table |>
+    summarise(singleton_incl_ari = adjustedRandIndex(group_pling, group_mash)),
+  node_table |>
+    filter(group_pling != "Singleton" & group_mash != "Singleton") |>
+    summarise(singleton_rm_ari = adjustedRandIndex(group_pling, group_mash)),
+  node_table |>
+    mutate(
+      group_pling = as.character(group_pling),
+      group_pling = if_else(
+        group_pling == "Singleton",
+        str_glue("Singleton_{row_number()}"),
+        group_pling
+      ),
+      group_mash = as.character(group_mash),
+      group_mash = if_else(
+        group_mash == "Singleton",
+        str_glue("Singleton_{row_number() * 10}"),
+        group_mash
+      )
+    ) |>
+    summarise(singleton_idx_ari = adjustedRandIndex(group_pling, group_mash))
+) |>
+  write.csv(
+    file = "network_analysis/ARI.csv",
+    row.names = FALSE
 )
