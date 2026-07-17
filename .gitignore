@@ -9,3 +9,6 @@ contig_info.csv
 input.txt
 size-vs-distances.pdf
 rename_csv_pubkey.py
+ncbi_metadata.csv
+metadata/
+*.fasta
