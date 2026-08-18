@@ -1,5 +1,7 @@
 # cfr-plasmid-analysis
 
+Scripts for manuscript as supplementary methods.
+
 ## Overview
 
 This repository contains scripts, notebooks, and environment files accompanying the manuscript:
