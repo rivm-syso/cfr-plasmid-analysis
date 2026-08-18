@@ -7,9 +7,8 @@ Corresponding author: Thera Habben Jansen, thabbenjansen@amphia.nl
 This repository contains scripts, notebooks, and environment files accompanying the manuscript:
 
 > Diversity and host association of cfr-carrying plasmids of multidrug-resistant microorganisms from the Netherlands 
-> Thera Habben Jansen Simon Lansu, Kees T. Veldman, Peter C. Wever, Fabian Landman, Heiman F.L. Wertheim and Antoni P.A. Hendrickx
 
-Corresponding author: Thera Habben Jansen, thabbenjansen@amphia.nl 
+> Thera Habben Jansen Simon Lansu, Kees T. Veldman, Peter C. Wever, Fabian Landman, Heiman F.L. Wertheim and Antoni P.A. Hendrickx
 
 All scripts are implementations of publicly available tools and software and contains no original software/tools.
 
