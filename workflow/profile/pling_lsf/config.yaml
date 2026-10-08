@@ -1,0 +1,12 @@
+latency-wait: "60"
+use-conda: "True"
+use-singularity: "True"
+printshellcmds: "True"
+keep-going: "True"
+jobs: "300"
+keep-incomplete: "True"
+default-resources:
+    runtime_min: 480
+    mem_mb: 500
+cluster-status: check_lsf_status.py
+cluster: "mkdir -p log/cluster/{name}; bsub -W {resources.runtime_min} -n {threads} -M {resources.mem_mb} -hl -R 'rusage[mem={resources.mem_mb}]' -o log/cluster/{name}/%J.out -e log/cluster/{name}/%J.err"

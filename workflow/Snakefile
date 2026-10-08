@@ -1,0 +1,17 @@
+from pathlib import Path
+
+configfile: Path(workflow.basedir).parent / 'config/config.yaml'
+
+include: "rules/common.smk"
+include: "rules/tools.smk"
+include: "rules/analysis.smk"
+
+rule all:
+    input: 
+        "results/figures/fig2a_sau-resistome.png",
+        "results/figures/fig2b_pmi-resistome.png",
+        "results/figures/fig3_synteny-rivm-plasmids.png",
+        "results/figures/fig5_network.png",
+        "results/figures/sup-fig4_mash-sensitivity.png",
+        "results/figures/sup-fig8_distance-vs-size.png"
+

@@ -1,0 +1,27 @@
+mash:
+  k: 21
+  s: 10000
+  cluster_cutoff: 0.05
+
+pling:
+  containment_cutoff: 0.5
+  dcj_cutoff: 4
+
+abricate: 
+  identity: 95
+  coverage: 80
+
+blast:
+  tblastn:
+    evalue: 1e-5
+    qcov_hsp: 90
+    max_hsps: 1
+  blastn:
+    evalue: 1e-5
+    perc_identity: 90
+
+bakta:
+  db: /home/lansus/my_scratch_dir/bakta_db/db
+  threads: 8
+  runtime_min: 59
+  mem_mb: 24000
