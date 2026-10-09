@@ -13,5 +13,6 @@ rule all:
         "results/figures/fig3_synteny-rivm-plasmids.png",
         "results/figures/fig5_network.png",
         "results/figures/sup-fig4_mash-sensitivity.png",
-        "results/figures/sup-fig8_distance-vs-size.png"
+        "results/figures/sup-fig8_distance-vs-size.png",
+        "results/tables/merged_metadata.csv"
 

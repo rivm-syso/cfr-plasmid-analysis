@@ -45,6 +45,20 @@ def gather_mobtyper(wildcards):
     samples = rivm_samples + public_samples
     return expand("results/mobtyper/typing/{sample}.tab", sample=samples)
 
+def gather_resfinder(wildcards):
+    rivm_samples = pd.read_csv(checkpoints.resistome_figure.get(**wildcards).output.fig_2c)["accession"].to_list()
+    public_samples = pd.read_csv(checkpoints.get_ncbi_data.get(**wildcards).output.metadata)["accession"].to_list()
+
+    samples = rivm_samples + public_samples
+    return expand("results/abricate/{db}/{sample}.tab", sample=samples, db="resfinder")
+
+def gather_tblastn(wildcards):
+    rivm_samples = pd.read_csv(checkpoints.resistome_figure.get(**wildcards).output.fig_2c)["accession"].to_list()
+    public_samples = pd.read_csv(checkpoints.get_ncbi_data.get(**wildcards).output.metadata)["accession"].to_list()
+
+    samples = rivm_samples + public_samples
+    return expand("results/blast/tblastn/{sample}.csv", sample=samples)
+
 def get_species(wildcards):
     if "RIVM" in wildcards.sample:
         rivm_metadata = pd.read_csv("resources/metadata/metadata.csv").set_index("sample_name")
@@ -60,7 +74,6 @@ def rivm_synteny_input(wildcards):
     rivm_samples = [sample for sample in rivm_samples if sample.startswith("pRIVM_M")]
     return expand("resources/fasta/{sample}.fasta", sample=rivm_samples)
 
-
 def rivm_links(wildcards):
     rivm_samples = pd.read_csv(checkpoints.resistome_figure.get(**wildcards).output.fig_2c)["accession"].to_list()
     rivm_samples = [sample for sample in rivm_samples if sample.startswith("pRIVM_M")]
@@ -75,6 +88,5 @@ def rivm_biomarkers(wildcards):
     rivm_samples = pd.read_csv(checkpoints.resistome_figure.get(**wildcards).output.fig_2c)["accession"].to_list()
     rivm_samples = [sample for sample in rivm_samples if sample.startswith("pRIVM_M")]
     return expand("results/mobtyper/biomarkers/{sample}.tab", sample=rivm_samples)
-
 
 

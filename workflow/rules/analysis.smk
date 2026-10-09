@@ -81,3 +81,21 @@ rule synteny_rivm_plasmids:
     output: "results/figures/fig3_synteny-rivm-plasmids.png"
     conda: "../envs/gggenomes.yaml"
     script: "../scripts/synteny_rivm_plasmids.R"
+
+rule generate_tables:
+    input:
+        node_table = "results/network_analysis/node_table.csv",
+        public_metadata = "results/metadata/public_plasmid_metadata.csv",
+        rivm_metadata = "results/metadata/rivm_plasmid_metadata.csv",
+        resfinder = gather_resfinder,
+        mobtyper = gather_mobtyper,
+        tblastn = gather_tblastn
+    output:
+        metadata = "results/tables/merged_metadata.csv",
+        resistance = "results/tables/resistance_profiles.csv",
+        mobility = "results/tables/mobility.csv",
+        cfr_count = "results/tables/cfr_count_table.csv",
+        mash_clusters = "results/tables/mash_cluster_description.csv",
+        pling_subcommunities = "results/tables/pling_subcommunity_description.csv"
+    log: notebook = "log/generate_tables.ipynb"
+    notebook: "../notebooks/generate_tables.ipynb"
