@@ -12,6 +12,11 @@ library(ggplot2)
 library(ggrepel)
 library(mclust)
 
+# logging ----
+
+log <- file(snakemake@log[[1]], open = "wt")
+sink(log)
+
 # read metadata ----
 
 rivm_metadata <- read.csv(snakemake@input[["rivm_metadata"]]) |>

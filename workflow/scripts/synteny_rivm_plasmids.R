@@ -5,6 +5,11 @@ library(gggenomes)
 library(ggtext)
 library(ggrepel)
 
+# logging ----
+
+log <- file(snakemake@log[[1]], open = "wt")
+sink(log)
+
 # Plotting function ----
 
 synteny_plot <- function(gbff, links, mobtyper, order) {

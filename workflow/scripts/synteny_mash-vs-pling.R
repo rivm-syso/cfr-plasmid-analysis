@@ -6,6 +6,11 @@ library(ggtext)
 library(ggrepel)
 library(patchwork)
 
+# logging ----
+
+log <- file(snakemake@log[[1]], open = "wt")
+sink(log)
+
 # Plotting function ----
 
 synteny_plot <- function(gbff, links, mobtyper) {

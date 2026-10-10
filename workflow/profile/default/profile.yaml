@@ -7,6 +7,6 @@ show-failed-logs: "True"
 jobs: 300
 executor: cluster-generic
 default-resources:
-  mem_mb: 500
+  mem_mb: 1000
   runtime_min: 15
 cluster-generic-submit-cmd: "mkdir -p log/cluster/{name} ; bsub -q bio -W {resources.runtime_min} -n {threads} -M {resources.mem_mb} -hl -R 'rusage[mem={resources.mem_mb}]' -o log/cluster/{name}/%J.out -e log/cluster/{name}/%J.err"

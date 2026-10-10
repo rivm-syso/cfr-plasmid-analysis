@@ -50,6 +50,7 @@ rule network_analysis:
         mash_cluster_cutoff = config["mash"]["cluster_cutoff"],
         pling_containment_cutoff = config["pling"]["containment_cutoff"],
         pling_dcj_cutoff = config["pling"]["dcj_cutoff"]
+    log: "log/rscripts/network_analysis.txt"
     conda: "../envs/ggnetwork.yaml"
     script: "../scripts/network_analysis.R"
 
@@ -94,6 +95,7 @@ rule synteny_rivm_plasmids:
         order = "results/synteny/rivm/order.txt"
     output: "results/figures/fig3_synteny-rivm-plasmids.png"
     conda: "../envs/gggenomes.yaml"
+    log: "log/rscripts/synteny_rivm_plasmids.txt"
     script: "../scripts/synteny_rivm_plasmids.R"
 
 rule synteny_mash_vs_pling:
@@ -109,6 +111,7 @@ rule synteny_mash_vs_pling:
         biomarkers_c = lambda wildcards: gather_biomarkers(wildcards, "C")
     output: "results/figures/fig4_synteny-mash-vs-pling.png"
     conda: "../envs/gggenomes.yaml"
+    log: "log/rscripts/synteny_mash-vs-pling.txt"
     script: "../scripts/synteny_mash-vs-pling.R"
 
 rule generate_tables:
