@@ -168,7 +168,9 @@ rule run_mobtyper_biomarkers:
         """
 
 rule run_bakta:
-    input: fasta_file
+    input: 
+        fasta = fasta_file,
+        metadata = "results/metadata/public_plasmid_metadata.csv"
     output: "results/bakta/{sample}/{sample}.gbff"
     params:
         db = config["bakta"]["db"],
@@ -182,7 +184,7 @@ rule run_bakta:
     shell:
         """
         bakta \
-            {input} \
+            {input.fasta} \
             --db {params.db} \
             --threads {threads} \
             --output results/bakta/{wildcards.sample} \

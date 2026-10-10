@@ -2,6 +2,7 @@ import re
 from itertools import combinations
 
 import pandas as pd
+import yaml
 
 
 def rivm_abricate(wildcards):
@@ -89,4 +90,17 @@ def rivm_biomarkers(wildcards):
     rivm_samples = [sample for sample in rivm_samples if sample.startswith("pRIVM_M")]
     return expand("results/mobtyper/biomarkers/{sample}.tab", sample=rivm_samples)
 
+def gather_genbank(wildcards, subplot):
+    with open(checkpoints.mash_vs_pling.get(**wildcards).output[0], "r") as file:
+        samples = yaml.safe_load(file)
+        return expand("results/rotated/genbank/{sample}.gbff", sample=samples[subplot])
 
+def gather_biomarkers(wildcards, subplot):
+    with open(checkpoints.mash_vs_pling.get(**wildcards).output[0], "r") as file:
+        samples = yaml.safe_load(file)
+        return expand("results/mobtyper/biomarkers/{sample}.tab", sample=samples[subplot])
+
+def gather_blastn(wildcards, subplot):
+    with open(checkpoints.mash_vs_pling.get(**wildcards).output[0], "r") as file:
+        samples = yaml.safe_load(file)
+        return ["results/synteny/blast/{sample_a}-{sample_b}.csv".format(sample_a=a, sample_b=b) for a, b in combinations(samples[subplot], 2)]

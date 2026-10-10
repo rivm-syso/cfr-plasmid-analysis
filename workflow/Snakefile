@@ -11,8 +11,14 @@ rule all:
         "results/figures/fig2a_sau-resistome.png",
         "results/figures/fig2b_pmi-resistome.png",
         "results/figures/fig3_synteny-rivm-plasmids.png",
+        "results/figures/fig4_synteny-mash-vs-pling.png",
         "results/figures/fig5_network.png",
         "results/figures/sup-fig4_mash-sensitivity.png",
         "results/figures/sup-fig8_distance-vs-size.png",
-        "results/tables/merged_metadata.csv"
+        "results/tables/merged_metadata.csv",
+        "results/tables/resistance_profiles.csv",
+        "results/tables/mobility.csv",
+        "results/tables/cfr_count_table.csv",
+        "results/tables/mash_cluster_description.csv",
+        "results/tables/pling_subcommunity_description.csv"
 

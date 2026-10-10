@@ -8,7 +8,7 @@ library(patchwork)
 
 # Plotting function ----
 
-synteny_plot <- function(gbff, links, mobtyper, order) {
+synteny_plot <- function(gbff, links, mobtyper) {
   theme <- theme_gggenomes_clean(base_size = 8) +
     theme()
 
@@ -22,7 +22,7 @@ synteny_plot <- function(gbff, links, mobtyper, order) {
         str_detect(product, "IS") ~ "transposable element",
         .default = "Other"
       ),
-      seq_id = factor(seq_id, levels = order, ordered = TRUE)
+      seq_id = factor(seq_id, ordered = TRUE)
     )
 
   plot <- gggenomes::gggenomes(gbff) |>
@@ -68,7 +68,7 @@ synteny_plot <- function(gbff, links, mobtyper, order) {
       },
       na.value = "#C8C8C8",
       drop = FALSE,
-      guide = guide_legend(ncol = 3)
+      guide = guide_legend(ncol = 1)
     ) +
     geom_text_repel(
       data = genes(
@@ -98,78 +98,118 @@ synteny_plot <- function(gbff, links, mobtyper, order) {
   return(plot)
 }
 
+# file parsing ----
+
+parse_biomarkers <- function(file) {
+  sample_id <- stringr::str_remove(basename(file), fixed(".tab"))
+  df <- tryCatch(
+    {
+      read.delim(file, sep = "\t")
+    },
+    error = function(cond) {
+      print(cond)
+      return(tibble())
+    }
+  )
+  if (nrow(df) != 0) {
+    df |>
+      mutate(
+        seq_id = sample_id[[1]][1],
+        strand = case_when(
+          sstrand == "plus" ~ "+",
+          sstrand == "minus" ~ "-"
+        ),
+        type = "CDS"
+      ) |>
+      rename(
+        start = sstart,
+        end = send,
+        gene_type = biomarker
+      ) |>
+      select(
+        seq_id, start, end, strand, gene_type, type
+      )
+  } else {
+    df
+  }
+}
+
+parse_links <- function(file) {
+  df <- read.csv(file) |>
+    rename(
+      seq_id = qseqid,
+      length = qlen,
+      start = qstart,
+      end = qend,
+      seq_id2 = sseqid,
+      length2 = slen,
+      start2 = sstart,
+      end2 = send,
+      strand2 = sstrand
+    ) |>
+    mutate(
+      strand = "+",
+      strand2 = case_when(
+        strand2 == "plus" ~ "+",
+        strand2 == "minus" ~ "-"
+      )
+    )
+  df
+}
+
 # Panel A ----
 
-gbff <- list.files(
-  "synteny/mash-clust-3_pling-singletons/rotated",
-  "*.gbff",
-  full.names = TRUE
-) |>
+gbff <- snakemake@input[["genbank_a"]] |>
   map_dfr(read_gbk)
 
-links <- read.csv("synteny/mash-clust-3_pling-singletons/blast_homology.csv")
-mobtyper <- read.csv("synteny/mash-clust-3_pling-singletons/mob_markers.csv")
+links <- snakemake@input[["links_a"]] |>
+  map_dfr(parse_links)
+
+mobtyper <- snakemake@input[["biomarkers_a"]] |>
+  map_dfr(parse_biomarkers)
 
 panel_a <- synteny_plot(
-  gbff, links, mobtyper,
-  order = c(
-    "pRIVM_M037203_1",
-    "CP150655.1",
-    "pRIVM_M083782_1",
-    "KX520649.1"
-  )
+  gbff, links, mobtyper
 )
-ggsave("synteny/panel_a.pdf", plot = panel_a, width = 180, unit = "mm")
 
 # Panel B ----
 
-gbff <- list.files(
-  "synteny/mash-clust-5_pling-singletons/rotated",
-  "*.gbff",
-  full.names = TRUE
-) |>
+gbff <- snakemake@input[["genbank_b"]] |>
   map_dfr(read_gbk)
 
-links <- read.csv("synteny/mash-clust-5_pling-singletons/blast_homology.csv")
-mobtyper <- read.csv("synteny/mash-clust-5_pling-singletons/mob_markers.csv")
+links <- snakemake@input[["links_b"]] |>
+  map_dfr(parse_links)
+
+mobtyper <- snakemake@input[["biomarkers_b"]] |>
+  map_dfr(parse_biomarkers)
 
 panel_b <- synteny_plot(
-  gbff, links, mobtyper,
-  order = c(
-    "pRIVM_M044329_1",
-    "CP065796.1"
-  )
+  gbff, links, mobtyper
 )
-ggsave("synteny/panel_b.pdf", plot = panel_b, width = 180, unit = "mm")
+
 
 # Panel C ----
 
-gbff <- list.files(
-  "synteny/mash-clust-22_pling-singletons/rotated",
-  "*.gbff",
-  full.names = TRUE
-) |>
+gbff <- snakemake@input[["genbank_c"]] |>
   map_dfr(read_gbk)
 
-links <- read.csv("synteny/mash-clust-22_pling-singletons/blast_homology.csv")
-mobtyper <- read.csv("synteny/mash-clust-22_pling-singletons/mob_markers.csv")
+links <- snakemake@input[["links_c"]] |>
+  map_dfr(parse_links)
+
+mobtyper <- snakemake@input[["biomarkers_c"]] |>
+  map_dfr(parse_biomarkers)
 
 panel_c <- synteny_plot(
-  gbff, links, mobtyper,
-  order = c(
-    "pRIVM_C081951_1",
-    "CP034667.1"
-  )
+  gbff, links, mobtyper
 )
-ggsave("synteny/panel_c.pdf", plot = panel_c, width = 180, unit = "mm")
 
 # Multipanel ----
 
 design <- "
-AAAABBBB
-AAAABBBB
-AAAADDDD
-AAAADDDD
+AAAAAADD
+AAAAAADD
+BBBBBBDD
+BBBBBBDD
 CCCCCCCC
 CCCCCCCC
 "
@@ -177,4 +217,4 @@ multipanel <- panel_a + panel_b + panel_c + guide_area() +
   plot_layout(guides = "collect", design = design) +
   plot_annotation(tag_levels = "A")
 
-ggsave("synteny/multipanel.pdf", plot = multipanel, width = 180, unit = "mm")
+ggsave(snakemake@output[[1]], plot = multipanel, width = 180, unit = "mm")

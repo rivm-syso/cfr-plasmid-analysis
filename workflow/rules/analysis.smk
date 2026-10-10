@@ -49,6 +49,12 @@ rule network_analysis:
     conda: "../envs/ggnetwork.yaml"
     script: "../scripts/network_analysis.R"
 
+checkpoint mash_vs_pling:
+    input: "results/network_analysis/node_table.csv",
+    output: "results/network_analysis/mash-vs-pling.yaml"
+    log: notebook = "log/mash-vs-pling.ipynb"
+    notebook: "../notebooks/mash-vs-pling.ipynb"
+
 rule distance_vs_size:
     input: 
         mash = "results/mash/edgelist.tab",
@@ -81,6 +87,21 @@ rule synteny_rivm_plasmids:
     output: "results/figures/fig3_synteny-rivm-plasmids.png"
     conda: "../envs/gggenomes.yaml"
     script: "../scripts/synteny_rivm_plasmids.R"
+
+rule synteny_mash_vs_pling:
+    input:
+        genbank_a = lambda wildcards: gather_genbank(wildcards, "A"),
+        links_a = lambda wildcards: gather_blastn(wildcards, "A"),
+        biomarkers_a = lambda wildcards: gather_biomarkers(wildcards, "A"),
+        genbank_b = lambda wildcards: gather_genbank(wildcards, "B"),
+        links_b = lambda wildcards: gather_blastn(wildcards, "B"),
+        biomarkers_b = lambda wildcards: gather_biomarkers(wildcards, "B"),
+        genbank_c = lambda wildcards: gather_genbank(wildcards, "C"),
+        links_c = lambda wildcards: gather_blastn(wildcards, "C"),
+        biomarkers_c = lambda wildcards: gather_biomarkers(wildcards, "C")
+    output: "results/figures/fig4_synteny-mash-vs-pling.png"
+    conda: "../envs/gggenomes.yaml"
+    script: "../scripts/synteny_mash-vs-pling.R"
 
 rule generate_tables:
     input:

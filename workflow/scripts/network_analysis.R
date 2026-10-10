@@ -35,8 +35,8 @@ metadata <- rivm_metadata |>
   mutate(continent_count = n()) |>
   group_by(country) |>
   mutate(country_count = n()) |>
-  group_by(order) |>
-  mutate(order_count = n()) |>
+  group_by(family) |>
+  mutate(family_count = n()) |>
   group_by(genus) |>
   mutate(genus_count = n()) |>
   ungroup() |>
@@ -45,11 +45,11 @@ metadata <- rivm_metadata |>
     continent = fct_inorder(continent, ordered = TRUE),
     country = fct_inorder(country, ordered = TRUE)
   ) |>
-  arrange(desc(order_count), desc(genus_count)) |>
+  arrange(desc(family_count), desc(genus_count)) |>
   mutate(
-    order = fct_inorder(order, ordered = TRUE),
-    order = fct_lump_n(order, 5),
-    genus = ifelse(order == "Other", NA, genus),
+    family = fct_inorder(family, ordered = TRUE),
+    family = fct_lump_n(family, 5),
+    genus = ifelse(family == "Other", NA, genus),
     genus = fct_inorder(genus, ordered = TRUE)
   )
 
@@ -147,23 +147,25 @@ plot_network <- function(graph_layout, category, colors) {
     ggnetwork::geom_nodes(
       aes(
         shape = sequence_source,
-        color = .data[[category]]
+        fill = .data[[category]]
       ),
-      size = 2
+      color = "#C6C6C6",
+      size = 2,
+      linewidth = .125
     ) +
-    scale_color_manual(
+    scale_fill_manual(
       values = colors,
       labels = function(breaks) {
         breaks[is.na(breaks)] <- "other|unknown"
         breaks
       },
       na.value = "#C6C6C6",
-      guide = guide_legend(ncol = 1)
+      guide = guide_legend(ncol = 1, override.aes = list(shape = 21))
     ) +
     scale_shape_manual(
       values = c(
-        "Public" = 19,
-        "RIVM" = 18
+        "Public" = 21,
+        "RIVM" = 23
       )
     ) +
     geom_label(
@@ -206,7 +208,7 @@ generate_palette <- function(df, category, group_levels, level) {
   n <- length(levels)
   hues <- colorRampPalette(
     c(base_color, "#FFFFFF"),
-    interpolate = "spline"
+    interpolate = "linear"
   )(n + 1)
   hues <- hues[1:n]
   names(hues) <- levels
@@ -214,9 +216,9 @@ generate_palette <- function(df, category, group_levels, level) {
 }
 
 genus_colors <- metadata |>
-  group_by(order) |>
+  group_by(family) |>
   group_map(
-    ~ generate_palette(.x, "genus", levels(metadata$order), .y$order)
+    ~ generate_palette(.x, "genus", levels(metadata$family), .y$family)
   ) |>
   flatten()
 
