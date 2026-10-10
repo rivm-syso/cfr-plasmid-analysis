@@ -7,6 +7,7 @@ checkpoint resistome_figure:
         fig_2a = "results/figures/fig2a_sau-resistome.png",
         fig_2b = "results/figures/fig2b_pmi-resistome.png",
         fig_2c = "results/metadata/rivm_plasmid_metadata.csv"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/resistome_figure.ipynb"
     notebook: "../notebooks/resistome_figure.ipynb"
 
@@ -15,6 +16,7 @@ rule filter_plsdb_records:
         "resources/plsdb/plsdb_blastn.tsv",
         "resources/plsdb/plsdb_tblastn.tsv"
     output: "results/metadata/plsdb_records.txt"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/filter_plsdb_records.ipynb"
     notebook: "../notebooks/filter_plsdb_records.ipynb"
 
@@ -23,12 +25,14 @@ checkpoint get_ncbi_data:
     output:
         metadata = "results/metadata/public_plasmid_metadata.csv",
         fasta = directory("results/fasta")
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/get_ncbi_data.ipynb"
     notebook: "../notebooks/get_ncbi_data.ipynb"
 
 rule mash_sensitivity:
     input: "results/mash/matrix.tab"
     output: "results/figures/sup-fig4_mash-sensitivity.png"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/mash_sensitivity.ipynb"
     notebook: "../notebooks/mash_sensitivity.ipynb"
 
@@ -52,6 +56,7 @@ rule network_analysis:
 checkpoint mash_vs_pling:
     input: "results/network_analysis/node_table.csv",
     output: "results/network_analysis/mash-vs-pling.yaml"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/mash-vs-pling.ipynb"
     notebook: "../notebooks/mash-vs-pling.ipynb"
 
@@ -61,6 +66,7 @@ rule distance_vs_size:
         pling = "results/pling",
         mobtyper = gather_mobtyper
     output: "results/figures/sup-fig8_distance-vs-size.png"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/distance_vs_size.ipynb"
     notebook: "../notebooks/distance_vs_size.ipynb"
 
@@ -69,12 +75,14 @@ rule parse_genbank:
     output: 
         genbank = "results/rotated/genbank/{sample}.gbff",
         fasta = "results/rotated/fasta/{sample}.fasta"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/parse_genbank/{sample}/parse_genbank.ipynb"
     notebook: "../notebooks/parse_genbank.ipynb"
 
 rule synteny_order:
     input: "results/mash/synteny_matrix.tab"
     output: "results/synteny/rivm/order.txt"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/synteny_order_rivm.ipynb"
     notebook: "../notebooks/synteny_order_rivm.ipynb"
     
@@ -118,5 +126,6 @@ rule generate_tables:
         cfr_count = "results/tables/cfr_count_table.csv",
         mash_clusters = "results/tables/mash_cluster_description.csv",
         pling_subcommunities = "results/tables/pling_subcommunity_description.csv"
+    conda: "../envs/manuscript.yaml"
     log: notebook = "log/generate_tables.ipynb"
     notebook: "../notebooks/generate_tables.ipynb"

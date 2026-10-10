@@ -143,7 +143,7 @@ rule run_mobtyper:
     conda: "../envs/mob-suite.yaml"
     log: "log/mobtyper/typing/{sample}.txt"
     resources:
-        runtime_min = 59
+        runtime_min = config["mobtyper"]["runtime_min"]
     shell:
         """
         mob_typer \
@@ -158,6 +158,8 @@ rule run_mobtyper_biomarkers:
         out = "results/mobtyper/biomarkers/typing/{sample}.tab",
     conda: "../envs/mob-suite.yaml"
     log: "log/mobtyper/biomarkers/{sample}.txt"
+    resources:
+        runtime_min = config["mobtyper"]["runtime_min"]
     shell:
         """
         mob_typer \

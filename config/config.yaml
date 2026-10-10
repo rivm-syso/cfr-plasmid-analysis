@@ -11,6 +11,9 @@ abricate:
   identity: 95
   coverage: 80
 
+mobtyper:  
+  runtime_min : 59
+
 blast:
   tblastn:
     evalue: 1e-5

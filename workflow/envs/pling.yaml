@@ -588,4 +588,3 @@ dependencies:
   - zipp=3.20.2=pyhd8ed1ab_0
   - zstandard=0.25.0=py311haee01d2_1
   - zstd=1.5.7=hb78ec9c_6
-prefix: /mnt/scratch_dir/lansus/conda/envs/pling
