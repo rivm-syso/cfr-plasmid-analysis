@@ -28,3 +28,6 @@ bakta:
   threads: 8
   runtime_min: 59
   mem_mb: 24000
+
+ncbi:
+  credentials: /home/lansus/my_scratch_dir/secrets/ncbi_credentials.yaml

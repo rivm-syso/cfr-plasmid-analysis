@@ -25,6 +25,8 @@ checkpoint get_ncbi_data:
     output:
         metadata = "results/metadata/public_plasmid_metadata.csv",
         fasta = directory("results/fasta")
+    params:
+        secrets = config["ncbi"]["credentials"]
     conda: "../envs/manuscript.yaml"
     log: notebook = "log/get_ncbi_data.ipynb"
     notebook: "../notebooks/get_ncbi_data.ipynb"
