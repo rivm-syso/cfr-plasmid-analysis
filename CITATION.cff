@@ -1,6 +1,5 @@
 # This CITATION.cff file was generated with cffinit.
 # Visit https://bit.ly/cffinit to generate yours today!
-
 cff-version: 1.2.0
 title: cfr-plasmid-analysis
 version: 0.2.0
@@ -36,3 +35,5 @@ contact:
   - email: simon.lansu@rivm.nl
     name: Simon Lansu
 license: EUPL-1.2
+doi: 10.21945/063d234a-4373-490e-bc93-45fdf920ed48
+date-released: 2026-10-14
