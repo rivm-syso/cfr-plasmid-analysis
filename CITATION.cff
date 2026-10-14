@@ -24,8 +24,14 @@ authors:
       National Institute for Public Health and the 
       Environment
     orcid: 'https://orcid.org/0000-0003-4431-9323'
+repository-code: 'https://github.com/rivm-syso/cfr-plasmid-analysis'
+url: 'https://github.com/rivm-syso/cfr-plasmid-analysis'
+abstract: 'Snakemake workflow for manuscript as supplementary methods.'
 keywords:
   - AMR
   - Public health
   - MRSA
+contact:
+  - email: simon.lansu@rivm.nl
+    name: Simon Lansu
 license: EUPL-1.2
