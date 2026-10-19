@@ -49,7 +49,7 @@ metadata <- rivm_metadata |>
   mutate(
     continent = fct_inorder(continent, ordered = TRUE),
     country = fct_inorder(country, ordered = TRUE),
-    country = fct_lump_min(country, 3, other_level = NA)
+    country = fct_lump_min(country, 2, other_level = NA)
   ) |>
   arrange(desc(family_count), desc(genus_count)) |>
   mutate(
